@@ -1,0 +1,620 @@
+/* Общие стили */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+/* Слайдер */
+#hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #111;
+}
+
+.slider {
+    display: flex;
+    transition: transform 1s ease;
+}
+
+.slide {
+    min-width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 3rem;
+    transition: opacity 1s ease-in-out;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+#rock { background-color: #ff4b5c; }
+#rap { background-color: #4b6f84; }
+#pop { background-color: #f9b440; }
+
+/* Жанры */
+#genres {
+    padding: 50px 20px;
+    background-color: #fff;
+}
+
+.genre-cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.genre-card {
+    background-color: #fff;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    transform: scale(1);
+    overflow: hidden;
+}
+
+.genre-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Карточки артистов */
+.artist-cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 50px;
+    flex-wrap: wrap;
+}
+
+.artist-card {
+    background-color: #fff;
+    padding: 20px;
+    width: 250px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artist-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Временная шкала */
+.timeline {
+    padding: 50px;
+    background-color: #222;
+    color: white;
+}
+
+.timeline-item {
+    margin: 20px 0;
+    transition: transform 0.5s ease;
+    opacity: 0;
+}
+
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.timeline-item:nth-child(even) {
+    transform: translateX(-100px);
+}
+
+.timeline-item:nth-child(odd) {
+    transform: translateX(100px);
+}
+
+/* Анимации */
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Появление элементов на экране */
+@media screen and (max-width: 768px) {
+    .genre-card {
+        width: 100%;
+    }
+}
+document.addEventListener("DOMContentLoaded", function() {
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const genreCards = document.querySelectorAll('.genre-card');
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    // Слайдер с переключением слайдов
+    const slideInterval = setInterval(nextSlide, 3000);
+
+    function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }
+
+    // Анимация появления элементов на временной шкале
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.5 });
+
+    timelineItems.forEach(item => observer.observe(item));
+
+    // Для карточек жанров с анимацией
+    genreCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            card.style.transform = 'scale(1.05)';
+        });
+        card.addEventListener('mouseleave', function() {
+            card.style.transform = 'scale(1)';
+        });
+    });
+});
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Космическое путешествие</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1a1a2e);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        header {
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, #ff00cc, #3333ff, #00ccff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: rainbow 8s linear infinite;
+            background-size: 200% auto;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #00ccff;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .planet-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .planet-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .planet-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+        
+        .planet-card h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ff00cc;
+        }
+        
+        .planet-card p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+          background: linear-gradient(45deg, #ff00cc, #3333ff);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 204, 0.5);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .planet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .planet-item {
+            position: relative;
+            height: 300px;
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            transition: all 0.3s ease;
+        }
+        
+        .planet-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .planet-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .planet-info {
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 1.5rem;
+            width: 100%;
+        }
+        
+        .planet-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #00ccff;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .social-icon {
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            color: #ff00cc;
+            transform: scale(1.2);
+        }
+        
+        .rocket {
+            position: fixed;
+            bottom: -100px;
+            right: 50px;
+            font-size: 3rem;
+            animation: launch 10s linear infinite;
+            transform: rotate(-45deg);
+            z-index: 100;
+        }
+        
+        @keyframes launch {
+            0% { bottom: -100px; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { bottom: 100vh; opacity: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .planet-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="rocket">🚀</div>
+    
+    <header>
+        <h1>КОСМИЧЕСКОЕ ПУТЕШЕСТВИЕ</h1>
+        <p class="subtitle">Исследуйте невероятные просторы Вселенной</p>
+        <a href="#explore" class="btn">Начать путешествие</a>
+    </header>
+    
+    <div class="container">
+        <section class="planet-card" id="explore">
+            <h2>Откройте для себя чудеса космоса</h2>
+            <p>Наш сайт перенесет вас в удивительное путешествие по просторам Вселенной. От ярких туманностей до загадочных черных дыр - здесь вы найдете самые захватывающие космические объекты.</p>
+            <p>Используйте современные технологии для виртуального исследования далеких галактик и планетных систем.</p>
+            <a href="#planets" class="btn">Исследовать планеты</a>
+        </section>
+        
+        <h2 style="text-align: center; margin-top: 3rem; font-size: 2.5rem; color: #ff00cc;" id="planets">Планетная система</h2>
+        
+        <div class="planet-grid">
+            <div class="planet-item">
+                <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Меркурий" class="planet-image">
+                <div class="planet-info">
+                    <h3>Меркурий</h3>
+                    <p>Самая близкая к Солнцу планета</p>
+                </div>
+            </div>
+            
+            <div class="planet-item">
+                <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Венера" class="planet-image">
+                <div class="planet-info">
+                    <h3>Венера</h3>
+                    <p>Планета с адскими условиями</p>
+                </div>
+            </div>
+            
+            <div class="planet-item">
+                <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Марс" class="planet-image">
+                <div class="planet-info">
+                    <h3>Марс</h3>
+                    <p>Красная планета - будущее человечества</p>
+                </div>
+            </div>
+            
+            <div class="planet-item">
+                <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Юпитер" class="planet-image">
+                <div class="planet-info">
+                    <h3>Юпитер</h3>
+                    <p>Газовый гигант с мощными штормами</p>
+                </div>
+            </div>
+            
+            <div class="planet-item">
+                <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Сатурн" class="planet-image">
+                <div class="planet-info">
+                    <h3>Сатурн</h3>
+                    <p>Властелин колец</p>
+                </div>
+            </div>
+            
+            <div class="planet-item">
+                <img src="https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Уран" class="planet-image">
+                <div class="planet-info">
+                    <h3>Уран</h3>
+                    <p>Ледяной гигант, лежащий на боку</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2023 Космическое путешествие. Все права защищены.</p>
+        <div class="social-links">
+            <a href="#" class="social-icon">📱</a>
+            <a href="#" class="social-icon">📘</a>
+            <a href="#" class="social-icon">📸</a>
+            <a href="#" class="social-icon">🐦</a>
+            <a href="#" class="social-icon">📹</a>
+        </div>
+    </footer>
+    
+    <script>
+        // Создаем звезды
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 200;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Случайные размеры
+                const size = Math.random() * 3;
+                star.style.width = ${size}px;
+                star.style.height = ${size}px;
+                
+                // Случайные позиции
+                star.style.left = ${Math.random() * 100}%;
+                star.style.top = ${Math.
+                  random() * 100}%;
+                
+                // Случайная длительность анимации
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Запускаем ракету при скролле
+        function launchRocket() {
+            const rocket = document.querySelector('.rocket');
+            let isLaunched = false;
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500 && !isLaunched) {
+                    rocket.style.animation = 'launch 5s linear forwards';
+                    isLaunched = true;
+                    
+                    // Сбрасываем анимацию через 5 секунд
+                    setTimeout(() => {
+                        rocket.style.animation = 'none';
+                        setTimeout(() => {
+                            rocket.style.animation = 'launch 5s linear infinite';
+                        }, 10);
+                        isLaunched = false;
+                    }, 5000);
+                }
+            });
+        }
+        
+        // Параллакс эффект для звезд
+        function parallaxEffect() {
+            const stars = document.querySelector('.stars');
+            
+            window.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                stars.style.transform = translate(-${x * 30}px, -${y * 30}px);
+            });
+        }
+        
+        // Инициализация
+        window.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            launchRocket();
+            parallaxEffect();
+        });
+    </script>
+</body>
+</html>
